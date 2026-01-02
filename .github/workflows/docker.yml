@@ -1,0 +1,33 @@
+name: Build & Run Docker App
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show files
+        run: |
+          pwd
+          ls -la
+
+      - name: Stop old container
+        run: |
+          docker rm -f python-ci-app || true
+
+      - name: Build Docker image
+        run: |
+          docker build -t python-ci-app:latest .
+
+      - name: Run container
+        run: |
+          docker run -d --name python-ci-app -p 8000:8000 python-ci-app:latest
+
+      - name: Verify container
+        run: docker ps
