@@ -23,7 +23,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t python-ci-app:latest .
+          docker build -t python-ci-app:${{ github.sha }} .
+
 
       - name: Run container
         run: |
@@ -31,3 +32,4 @@ jobs:
 
       - name: Verify container
         run: docker ps
+
